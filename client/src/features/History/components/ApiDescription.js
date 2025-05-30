@@ -1,15 +1,14 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import parse from "html-react-parser";
+import { Collapse } from 'react-bootstrap'
 
 export const ApiDescription = () => {
   const { t } = useTranslation("History");
-  const style = {
-    // minWidth: 400
-  };
+  const [open, setOpen] = React.useState(false);
 
   return (
-    <div className="col-lg-5" style={style}>
+    <div className="col-lg-5">
       <div id="accordion">
         <div className="card">
           <div className="card-header" id="headingOne">
@@ -20,6 +19,7 @@ export const ApiDescription = () => {
                 data-target="#collapseOne"
                 aria-expanded="false"
                 aria-controls="collapseOne"
+                onClick={() => {setOpen(!open)}}
               >
                 {t("ApiDecription.SeeMore")}
               </button>
@@ -27,13 +27,14 @@ export const ApiDescription = () => {
           </div>
           <div
             id="collapseOne"
-            className="collapse"
             aria-labelledby="headingOne"
             data-parent="#accordion"
           >
+            <Collapse in={open}>
             <div className="card-body">
               {parse(t("ApiDecription.CodeFlow"))}
             </div>
+            </Collapse>
           </div>
         </div>
       </div>

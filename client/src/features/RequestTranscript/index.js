@@ -38,6 +38,7 @@ export const RequestTranscriptPage = () => {
     }
 
     const body = {
+      "callback-url": process.env.REACT_APP_DS_RETURN_URL + "/signing_complete",
       "terms-name": t("Transcript.TermsName"),
       "terms-transcript": t("Transcript.DisplayName"),
       "display-name": t("Transcript.TermsTranscript")
@@ -48,7 +49,9 @@ export const RequestTranscriptPage = () => {
       dispatch({
         type: Actions.GET_CLICKWRAP_SUCCESS,
         payload: {
-          clickwrap: response.clickwrap
+          clickwrap: response.clickwrap,
+          envelopeId: response.envelope_id,
+          redirectUrl: response.redirect_url
         }
       });
       window.addEventListener(
@@ -73,11 +76,21 @@ export const RequestTranscriptPage = () => {
         }
       };
       try {
+        
         const response = await studentsAPI.requestTranscript(body);
         download(response, "transcript", "html", "text/html");
+
         window.addEventListener(
           "message",
-          event => goToSigningComplete(event),
+          event => {
+            if(event.data.type == "DOWNLOADED"){
+              setTimeout(() => {
+                goToSigningComplete(event);
+              }, 5000);
+            } else {
+              goToSigningComplete(event);
+            }
+          },
           false
         );
       } catch (error) {

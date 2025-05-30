@@ -13,19 +13,17 @@ export const ListItem = ({ item, onClick }) => {
       <td className="text-right">
         <div className="dropdown">
           <button
-            className="dropdown-toggle"
-            type="button"
-            id="dropdownMenuButton"
-            data-toggle="dropdown"
-            data-target="#dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
+             className="dropdown-toggle btn btn-secondary"
+              type="button"
+              id="options3"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
           >
             {t("OptionsButton")}
           </button>
           <div
             className="dropdown-menu dropdown-menu-right"
-            aria-labelledby="dropdownMenuButton"
+            aria-labelledby="options3"
           >
             <a href="#/"
               className="dropdown-item"
