@@ -66,7 +66,6 @@ export const About = () => {
           </p>
         </div>
       </div>
-      {parse(t("AboutDocuSign"))}
 
       <br></br>
     </div>

@@ -1,8 +1,6 @@
 {
-  "Header1": "Welcome to MyUni",
+  "Header1": "Welcome to the University Sample App",
   "Header2": "Self-Service Student Portal",
-  "Footer1": "Docusign: It's time to agree better",
-  "Footer2": "<p>Docusign helps organizations connect and automate how they prepare, sign, act on, and manage agreements.</p>",
   "SandBoxButton": "Create Developer Account",
   "LearnMoreButton": "Learn More",
   "Card1": {

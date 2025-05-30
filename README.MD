@@ -1,11 +1,11 @@
-# Python and React: MyUni Education Sample Application
+# Python and React: University Sample Application
 
-### Github repo: MyUniSampleApp
+### Github repo: University Sample App
 
 ## Introduction
-MyUni is a Docusign sample application written in Python 3.7 (server) and React (client). You can find a live instance running at [https://myuni.sampleapps.docusign.com/](https://myuni.sampleapps.docusign.com/).
+The University Sample App is a Docusign sample application written in Python 3.7 (server) and React (client). You can find a live instance running at [https://university.sampleapps.docusign.com/](https://university.sampleapps.docusign.com/).
 
-MyUni demonstrates the following:
+The University Sample App demonstrates the following:
 
 1. Authentication with Docusign via [JSON Web Token (JWT) Grant](https://developers.docusign.com/platform/auth/jwt/).
 2. **Change Your Major or Minor:** ([Source](./app/api/requests.py))
@@ -48,8 +48,8 @@ MyUni demonstrates the following:
 
 **Manual**
 
-1. Download or clone this repository to your workstation to directory **sample-app-myuni-python**
-2. Navigate to that folder: **`cd sample-app-myuni-python`** directory
+1. Download or clone this repository to your workstation to directory **sample-app-university-python**
+2. Navigate to that folder: **`cd sample-app-university-python`** directory
 3. Install python packages **`pip install -r requirements.txt`**
 4. Install React dependencies using [npm](https://www.npmjs.com/) package manager  **npm install**
 5. Update the **.env** file with the integration key and other settings.
@@ -58,8 +58,8 @@ MyUni demonstrates the following:
 
 **Using installation scripts**
 
-1. Download or clone this repository to your workstation in the folder **sample-app-myuni-python**.
-2. Navigate to the scripts subfolder: **`cd sample-app-myuni-python/scripts`**
+1. Download or clone this repository to your workstation in the folder **sample-app-university-python**.
+2. Navigate to the scripts subfolder: **`cd sample-app-university-python/scripts`**
 3. Run the installation script: **`./install.sh`**
 4. Update the **.env** file with the integration key and other settings.
     > **Note:** Protect your integration key and client secret. You should make sure that your **.env** file will not be stored in your source code repository.
@@ -70,11 +70,11 @@ All installation scripts are located in the **scripts** folder.
 1. To stop the application, run **`./stop.sh`**
 1. To remove the virtual environment and modules, run **`./clean.sh`**
 
-## Running MyUni
+## Running the University Sample App
 
 ### Manual
 
-1. Navigate to the application folder: **`cd sample-app-myuni-python`**
+1. Navigate to the application folder: **`cd sample-app-university-python`**
 2. Run the application: **`flask run --port 5001`**
 3. Run npm: **`npm start`**
 4. Open a browser to **http://localhost:3000**

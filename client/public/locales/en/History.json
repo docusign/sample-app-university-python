@@ -1,5 +1,5 @@
 {
-  "Title": "MyUni Sample App",
+  "Title": "University Sample App",
   "Header1": "Subject",
   "Header2": "Applicant",
   "Header3": "Last Updated",
@@ -8,9 +8,9 @@
   "HTMLOptionButton": "Download signed document",
   "SummaryOptionButton": "Download summary",
   "CombinedOptionButton": "Download combined PDF",
-  "EmptyListMessage": "Once you begin creating MyUni transactions, you'll be able to check their status here and download the documents they generate...",
+  "EmptyListMessage": "Once you begin creating transactions through the sample app, you'll be able to check their status here and download the documents they generate...",
   "ApiDecription": {
     "SeeMore": "- See behind the scenes",
-    "CodeFlow": "<p>View source file <a href='https://github.com/docusign/sample-app-myuni-python/blob/master/app/envelope.py#L68-L108' target='blank' rel='norefferer noopener'>envelopes.py</a> on GitHub.</p><h3>This sample features:</h3><ul><li>List envelope status changes</li><li>Download envelope documents</li></ul><h3>Code flow:</h3><h5>Step 1</h5><p>When the status page loads, we use the <a href='https://developers.docusign.com/docs/esign-rest-api/reference/envelopes/envelopes/liststatuschanges/' target='blank' rel='noopener noreferrer'>Envelopes: listStatusChanges</a> method to retrieve the statuses of envelopes in the authenticated user’s account, filtering by the current day's date with the <code>from_date</code> query parameter. Additionally, we use the <code>include</code> query parameter to retrieve recipient information for each envelope. We then cross-reference these envelopes with the envelope IDs saved in the app’s session and display only those sent by the currently authenticated user using the app.</p><p>To list envelope status changes, we send an API request to:</p><pre>POST /restapi/v2.1/accounts/{accountId}/envelopes?from_date={date}&include='recipients'</pre><h5>Step 2</h5><p>To download envelope documents, we send an API request to: <pre>GET /restapi/v2.1/accounts/{accountId}/envelopes/{envelopeId}/documents/{documentId}</pre></p>"
+    "CodeFlow": "<p>View source file <a href='https://github.com/docusign/sample-app-university-python/blob/master/app/envelope.py#L68-L108' target='blank' rel='norefferer noopener'>envelopes.py</a> on GitHub.</p><h3>This sample features:</h3><ul><li>List envelope status changes</li><li>Download envelope documents</li></ul><h3>Code flow:</h3><h5>Step 1</h5><p>When the status page loads, we use the <a href='https://developers.docusign.com/docs/esign-rest-api/reference/envelopes/envelopes/liststatuschanges/' target='blank' rel='noopener noreferrer'>Envelopes: listStatusChanges</a> method to retrieve the statuses of envelopes in the authenticated user’s account, filtering by the current day's date with the <code>from_date</code> query parameter. Additionally, we use the <code>include</code> query parameter to retrieve recipient information for each envelope. We then cross-reference these envelopes with the envelope IDs saved in the app’s session and display only those sent by the currently authenticated user using the app.</p><p>To list envelope status changes, we send an API request to:</p><pre>POST /restapi/v2.1/accounts/{accountId}/envelopes?from_date={date}&include='recipients'</pre><h5>Step 2</h5><p>To download envelope documents, we send an API request to: <pre>GET /restapi/v2.1/accounts/{accountId}/envelopes/{envelopeId}/documents/{documentId}</pre></p>"
   }
 }

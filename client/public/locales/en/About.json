@@ -1,12 +1,12 @@
 {
-  "Title": "MyUni Sample App",
+  "Title": "University Sample App",
   "Description": "<p>This education-focused Docusign sample application demonstrates some common Docusign API integration workflows built from the Docusign eSignature API, Docusign Click API, Docusign Payments, and Docusign Connect.</p>",
   "SourceButton": "GitHub Source",
-  "GitHubLink": " https://github.com/docusign/sample-app-myuni-python",
+  "GitHubLink": " https://github.com/docusign/sample-app-university-python",
   "SandboxText": "<h4>Get Started with the Docusign APIs Today</h4>",
   "SandboxButton": "GET YOUR DEVELOPER ACCOUNT",
   "Description2": "<p></br>With the Docusign developer account, you can test our APIs for free! Developer accounts do not expire and have enterprise-level features enabled.</p>",
-  "Features": "<h3>MyUni features:</h3><ul><li>Send document for signature</li><li>Update recipient information</li><li>Embedded signing </li><li>Create an envelope from HTML import</li><li>Real-time status reporting</li><li>Fill tab data</li><li>Create a clickwrap</li><li>Embed a clickwrap on your site</li><li>Calculated (formula) fields</li><liRequest payment</li></ul>",
+  "Features": "<h3>The University Sample App features:</h3><ul><li>Send document for signature</li><li>Update recipient information</li><li>Embedded signing </li><li>Create an envelope from HTML import</li><li>Real-time status reporting</li><li>Fill tab data</li><li>Create a clickwrap</li><li>Embed a clickwrap on your site</li><li>Calculated (formula) fields</li><liRequest payment</li></ul>",
   "ToolsandLinks": "API Tools and Resources",
   "DeveloperCenter": "Developer Center",
   "DeveloperCenterLink": "https://developers.docusign.com",
@@ -15,6 +15,5 @@
   "ESignatureDocumentation": "Docusign eSignature API Reference",
   "ESignatureDocumentationLink": "https://developers.docusign.com/docs/esign-rest-api/reference/",
   "DeveloperCommunity": "Developer Community",
-  "DeveloperCommunityLink": "http://stackoverflow.com/questions/tagged/docusignapi",
-  "AboutDocuSign": "<h3>About Docusign</h3><ul><li>More than 1,000,000 paying customers and over a billion users in over 180 countries</li><li>More than 300,000 new unique users join the Docusign Global Trust Network every day</li><li>83% of Docusign documents are returned within 1 hour, with 50% completed within 15 minutes</li><li>$36 per document savings when you leave paper behind</li>   <li>Docusign is available in 44 languages</li></ul>"
+  "DeveloperCommunityLink": "http://stackoverflow.com/questions/tagged/docusignapi"
 }
