@@ -86,7 +86,7 @@ export const RequestTranscriptPage = () => {
             if(event.data.type == "DOWNLOADED"){
               setTimeout(() => {
                 goToSigningComplete(event);
-              }, 5000);
+              }, 10000);
             } else {
               goToSigningComplete(event);
             }
