@@ -8,8 +8,6 @@ from app.api import auth, clickwrap, requests, common
 load_dotenv()
 
 URL_PREFIX = '/api'
-print(os.environ)
-print('=====')
 
 app = Flask(__name__)
 app.config.from_pyfile("config.py")

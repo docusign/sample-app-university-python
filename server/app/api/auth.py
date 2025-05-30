@@ -54,10 +54,6 @@ def jwt_auth():
     Authorization by JWT
     """
 
-    print("INSIDE /api/jwt_auth !!!")
-    # print("Request Headers:", dict(request.headers))
-    # print("Request Args:", request.args)
-
     try:
         auth_data = DsClient.update_token()
     except ApiException as exc:
