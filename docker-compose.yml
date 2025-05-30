@@ -1,0 +1,24 @@
+version: "3.9"
+services:
+  frontend:
+    image: myuni/front:latest
+    restart: always
+    build:
+      context: .
+      dockerfile: ./client/Dockerfile
+      args:
+        REACT_APP_API_BASE_URL: "http://localhost/api" 
+    env_file:
+      - .env
+    ports:
+      - 80:80
+      - 443:443
+
+  backend:
+    image: myuni/back:latest
+    restart: always
+    build:
+      context: .
+      dockerfile: ./server/Dockerfile
+    env_file:
+      - .env

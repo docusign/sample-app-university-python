@@ -15,8 +15,10 @@ input:-webkit-autofill:active {
 
 select {
   &.form-control {
-    -moz-appearance: none; /* Firefox */
-    -webkit-appearance: none; /* Safari and Chrome */
+    -moz-appearance: none;
+    /* Firefox */
+    -webkit-appearance: none;
+    /* Safari and Chrome */
     appearance: none;
     // background-image: url(../img/arrow.svg) !important;
     background-position: center right;
@@ -54,7 +56,7 @@ input[type="checkbox"] {
     width: auto;
     height: auto;
 
-    & + label {
+    &+label {
       position: relative;
       cursor: pointer;
       padding: 0;
@@ -95,25 +97,25 @@ input[type="checkbox"] {
       }
     }
 
-    &:not(:disabled):focus + label:before,
-    &:not(:disabled):hover + label:before,
-    &:not(:disabled):checked + label:before {
+    &:not(:disabled):focus+label:before,
+    &:not(:disabled):hover+label:before,
+    &:not(:disabled):checked+label:before {
       background: $danger;
       border-color: $danger;
       outline: none;
     }
 
-    &:not(:disabled):focus + label:after,
-    &:not(:disabled):hover + label:after,
-    &:not(:disabled):checked + label:after {
+    &:not(:disabled):focus+label:after,
+    &:not(:disabled):hover+label:after,
+    &:not(:disabled):checked+label:after {
       opacity: 1;
     }
 
-    &:disabled + label {
+    &:disabled+label {
       pointer-events: none;
     }
 
-    &:disabled + label:before {
+    &:disabled+label:before {
       box-shadow: none;
       pointer-events: none;
       background-color: #d1dadd;
@@ -129,7 +131,7 @@ input[type="radio"] {
     width: auto;
     height: auto;
 
-    & + label {
+    &+label {
       position: relative;
       cursor: pointer;
       padding: 0;
@@ -168,25 +170,25 @@ input[type="radio"] {
       }
     }
 
-    &:not(:disabled):focus + label:before,
-    &:not(:disabled):hover + label:before,
-    &:not(:disabled):checked + label:before {
+    &:not(:disabled):focus+label:before,
+    &:not(:disabled):hover+label:before,
+    &:not(:disabled):checked+label:before {
       background: $white;
       border-color: $danger;
       outline: none;
     }
 
-    &:not(:disabled):focus + label:after,
-    &:not(:disabled):hover + label:after,
-    &:not(:disabled):checked + label:after {
+    &:not(:disabled):focus+label:after,
+    &:not(:disabled):hover+label:after,
+    &:not(:disabled):checked+label:after {
       opacity: 1;
     }
 
-    &:disabled + label {
+    &:disabled+label {
       pointer-events: none;
     }
 
-    &:disabled + label:before {
+    &:disabled+label:before {
       box-shadow: none;
       pointer-events: none;
       background-color: $white;
@@ -199,10 +201,12 @@ input[type="radio"] {
   margin-right: -$grid-gutter-width / 2;
   padding-left: $grid-gutter-width / 2;
   padding-right: $grid-gutter-width / 2;
+
   @include media-breakpoint-up(md) {
     padding-left: 32px;
     padding-right: 32px;
   }
+
   @include media-breakpoint-up(lg) {
     padding-left: 42px;
   }
@@ -214,6 +218,7 @@ input[type="radio"] {
 
 .form-group {
   position: relative;
+  margin-bottom: 15px;
 
   .valid-feedback,
   .invalid-feedback {
@@ -228,8 +233,7 @@ input[type="radio"] {
   background-image: none !important;
 
   &:invalid,
-  &.invalid {
-  }
+  &.invalid {}
 }
 
 .invalid-feedback {

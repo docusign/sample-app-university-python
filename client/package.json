@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@popperjs/core": "^2.11.8",
+    "popper.js": "^1.16.1",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^14.3.1",
     "@testing-library/user-event": "^14.5.2",

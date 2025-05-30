@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Google Tag Manager -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    if (!window.google_tag_manager) {
+      console.warn("GTM is not initialized.");
+      return;
+    }
+    (function (w, d, s, l, i) {
+      try {
+        w[l] = w[l] || [];
+        w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+        var f = d.getElementsByTagName(s)[0];
+        var j = d.createElement(s);
+        var dl = l != 'dataLayer' ? '&l=' + l : '';
+        j.async = true;
+        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+
+        if (f && f.parentNode) {
+          f.parentNode.insertBefore(j, f);
+        } else {
+          console.warn('GTM script insertion failed.');
+        }
+      } catch (err) {
+        console.error('Error initializing GTM:', err);
+      }
+    })(window, document, 'script', 'dataLayer', 'GTM-WPK6FN5');
+  </script>
+  <!-- End Google Tag Manager -->
+  <meta charset="utf-8" />
+  <link rel="icon" href="favicon.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+  <title>MyUni Docusign Sample Application</title>
+  <meta name="description"
+    content="See how the MyUni Docusign sample application for education showcases the capabilities of the Docusign API to enable you to integrate Docusign functionality into your own applications.">
+  <meta property="og:type" content="article" />
+  <meta name="twitter:title" content="MyUni Docusign Sample Application" />
+  <meta name="twitter:description"
+    content="See how the MyUni Docusign sample application for education showcases the capabilities of the Docusign API to enable you to integrate Docusign functionality into your own applications." />
+  <meta property="og:title" content="MyUni Docusign Sample Application" />
+  <meta property="og:description"
+    content="See how the MyUni Docusign sample application for education showcases the capabilities of the Docusign API to enable you to integrate Docusign functionality into your own applications." />
+  <meta property="og:image" content="%PUBLIC_URL%/MyUni_OG.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+    rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Serif&display=swap"
+    rel="stylesheet">
+  <style>
+    .h5,
+    h5 {
+      font-size: .9rem;
+    }
+
+    code {
+      font-size: 100%;
+    }
+
+    pre {
+      font-size: 90%;
+    }
+
+    .card-info .card-info-description {
+      min-height: 45px;
+      display: block;
+    }
+
+    .card-info .card-info-button-holder {
+      padding: 25px 0;
+      margin-bottom: 0;
+    }
+
+    .card-info .card-info-list {
+      text-align: left;
+      width: max-content;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .card-info .card-info-list-title {
+      margin-bottom: 15px;
+      margin-left: auto;
+      margin-right: auto;
+      width: max-content;
+    }
+
+    .custom-list {
+      color: #b01c2e;
+      line-height: 1.8;
+      font-size: 14px;
+      padding-left: 14px;
+      margin-bottom: 0;
+    }
+
+    .btn-link {
+      font-weight: 400;
+      color: #b22035;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WPK6FN5" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <script src="https://demo.docusign.net/clickapi/sdk/latest/docusign-click.js"></script>
+  <div id="root"></div>
+</body>
+
+</html>

@@ -53,6 +53,7 @@ def jwt_auth():
     """
     Authorization by JWT
     """
+
     try:
         auth_data = DsClient.update_token()
     except ApiException as exc:

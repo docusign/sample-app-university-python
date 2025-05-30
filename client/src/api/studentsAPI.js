@@ -83,16 +83,25 @@ export async function getStatusDocument(envelopId, documentId) {
 }
 
 export async function getCliwrapForRequestTranscript(request) {
+  console.log("getCliwrapForRequestTranscript called with request:", request); // Log input request
+  
   try {
-    const response = await axios.post(
-      process.env.REACT_APP_API_BASE_URL + "/clickwraps/transcript",
-      request,
-      {
-        withCredentials: true
-      }
-    );
+    const apiUrl = process.env.REACT_APP_API_BASE_URL + "/clickwraps/transcript";
+    console.log(`Making POST request to: ${apiUrl}`);
+    
+    const response = await axios.post(apiUrl, request, { withCredentials: true });
+    console.log("API response received:", response.data); // Log API response
+
     return handleResponse(response);
   } catch (error) {
+    console.error("Error occurred during API call:", error); // Log full error object
+    console.error("Error details:", {
+      message: error.message,
+      config: error.config,
+      response: error.response ? error.response.data : "No response from server",
+      status: error.response ? error.response.status : "No status code"
+    });
+
     handleError(error);
   }
 }
