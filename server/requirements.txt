@@ -3,7 +3,7 @@ cffi==1.17.1
 chardet==5.2.0
 Click==8.1.7
 cryptography==43.0.3
-docusign-esign==4.0.0
+docusign-esign==5.0.0
 Flask==3.0.3
 Flask-Session==0.8.0
 flask-wtf==1.2.2
