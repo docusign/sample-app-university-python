@@ -1,6 +1,7 @@
 {
   "Header1": "Welcome to the University Sample App",
   "Header2": "Self-Service Student Portal",
+  "Description": "Supports both Authorization Code Grant and JSON Web Token (JWT) authentication.",
   "SandBoxButton": "Create Developer Account",
   "LearnMoreButton": "Learn More",
   "Card1": {
