@@ -43,6 +43,7 @@ export const Home = () => {
         <div className="container">
           <div className="hero-text">
             <h1 className="h1">{t("Header1")}</h1>
+            <h3 className="description">{t("Description")}</h3>
             <span className="sub-title">{t("Header2")}</span>
           </div>
         </div>
