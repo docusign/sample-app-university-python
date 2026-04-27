@@ -3,6 +3,7 @@ import { InputText } from "../../../components/InputText";
 import { InputSelect } from "../../../components/InputSelect";
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
+import { Loader } from "../../../components/Loader.js";
 
 export const RequestForm = ({
   request,
@@ -11,13 +12,22 @@ export const RequestForm = ({
   onChange,
   onSelect,
   requesting = false,
-  errors = {}
+  errors = {},
+  isLoading
 }) => {
   const { t } = useTranslation("RequestMajorMinor");
   const [submitted, setSubmitted] = useState(false);
   return (
     <div className="col-lg-6">
       <div className="form-holder bg-white pt-5 pb-5">
+        {isLoading ? (
+          <section className="container content-section">
+            <div className="row">
+              <Loader visible={isLoading} />
+               </div>
+          </section>
+        ) : (
+          <div>
         <h2 className="mb-4">{t("Title")}</h2>
         <form
           onSubmit={event => {
@@ -84,6 +94,8 @@ export const RequestForm = ({
         <div className="text-center form-text">
           <span>{t("SubmitInfo")}</span>
         </div>
+        </div>
+        )}
       </div>
     </div>
   );

@@ -6,12 +6,36 @@ from app.api.utils import process_error, check_token
 from app.clickwrap import Clickwrap
 from app.document import DsDocument
 from app.envelope import Envelope
+from app.extensions import Extensions
 from app.transcript import render_transcript
+from app.ds_config import CONNECTED_FIELDS_BASE_HOST
+import json
 
 from .session_data import SessionData
 
 requests = Blueprint('requests', __name__)
 
+@requests.route('/extensionApps', methods=['GET'])
+@cross_origin()
+def extension_apps():
+    """Request for extension apps"""
+
+    access_token = session.get('access_token')
+    account_id = session.get('account_id')
+    print("Started search")
+
+    try:
+        extensions = Extensions.getExtensions(account_id, access_token, CONNECTED_FIELDS_BASE_HOST)
+
+        session['extensions'] = json.dumps(extensions)
+        actual_app_ids = [item["appId"] for item in extensions]
+
+        email_extension_id = Extensions.getEmailExtensionIds()
+
+        has_all_app_ids = email_extension_id in actual_app_ids
+    except ApiException as exc:
+        return process_error(exc)
+    return jsonify({'areExtensionsPresent': has_all_app_ids})
 
 @requests.route('/requests/minormajor', methods=['POST'])
 @cross_origin()
@@ -24,14 +48,20 @@ def minor_major():
         return jsonify(message='Invalid json input'), 400
 
     student = req_json['student']
+    print("Ananana")
+    print(student)
+    useWithoutExtension = student['useWithoutExtension']
     envelope_args = {
         'signer_client_id': 1000,
         'ds_return_url': req_json['callback-url']
     }
 
     try:
-        # Create envelope
-        envelope = DsDocument.create('minor-major.html', student, envelope_args)
+        if useWithoutExtension == True:
+            envelope = DsDocument.create_without_extension('minor-major.html', student, envelope_args)
+        else:
+            extensions = json.loads(session.get('extensions'))
+            envelope = DsDocument.create('minor-major.html', student, envelope_args, extensions)
         # Submit envelope to the Docusign
         envelope_id = Envelope.send(envelope, session)
     except ApiException as exc:

@@ -16,6 +16,20 @@ export async function requestMinorChange(request) {
   }
 }
 
+export async function getExtensions() {
+  try {
+    const response = await axios.get(
+      process.env.REACT_APP_API_BASE_URL + "/extensionApps",
+      {
+        withCredentials: true
+      }
+    );
+    return handleResponse(response);
+  } catch (error) {
+    handleError(error);
+  }
+}
+
 export async function signUpForExtracurricularActivity(request) {
   try {
     const response = await axios.post(

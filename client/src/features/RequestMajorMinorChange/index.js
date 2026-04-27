@@ -8,6 +8,7 @@ import * as studentsAPI from "../../api/studentsAPI";
 import { useTranslation } from "react-i18next";
 import LoggedUserContext from "../../contexts/logged-user/logged-user.context";
 import { checkUnlogged } from "../../api/auth";
+import { ExtensionsModal } from "../../components/ExtensionsModal.js";
 
 const initialState = {
   errors: [],
@@ -21,6 +22,7 @@ const initialState = {
 };
 
 export const RequestMajorMinorChangePage = () => {
+  const { t: tCommon } = useTranslation("Common");
   const { t } = useTranslation("RequestMajorMinor");
   const [state, dispatch] = useReducer(reducer, initialState);
   const [request, setRequestData] = useState({ ...initialState.request });
@@ -28,6 +30,9 @@ export const RequestMajorMinorChangePage = () => {
   const [errors, setErrors] = useState({});
   const courses = t("Courses", { returnObjects: true });
   const { logged, setLogged, setAuthType } = useContext(LoggedUserContext);
+  const [areExtensionsPresent, setAreExtensionsPresent] = useState(false);
+  const [modalShow, setModalShow] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     checkUnlogged(logged, setLogged, setAuthType);
@@ -38,6 +43,10 @@ export const RequestMajorMinorChangePage = () => {
     if (!formIsValid()) {
       return;
     }
+
+    setLoading(true);
+    sessionStorage.setItem("useWithoutExtensions", "false"); // remove later
+    const useWithoutExtension = sessionStorage.getItem("useWithoutExtensions") === "true";
     const body = {
       "callback-url": process.env.REACT_APP_DS_RETURN_URL + "/signing_complete",
       student: {
@@ -45,11 +54,21 @@ export const RequestMajorMinorChangePage = () => {
         last_name: request.lastName,
         email: request.email,
         major: request.majorField,
-        minor: request.minorField
-      }
+        minor: request.minorField,
+        useWithoutExtension: useWithoutExtension,
+      },
     };
     setRequesting(true);
     try {
+      if (!useWithoutExtension) {
+        const extensions = await studentsAPI.getExtensions();
+        if(extensions.areExtensionsPresent === false){
+          setAreExtensionsPresent(true);
+          setModalShow(true);
+          return;
+        }
+      }
+
       const savedRequest = await studentsAPI.requestMinorChange(body);
       dispatch({
         type: SEND_REQEUST_SUCCESS,
@@ -62,6 +81,7 @@ export const RequestMajorMinorChangePage = () => {
       setErrors({ ...errors, onSave: error.message });
     } finally {
       setRequesting(false);
+      setLoading(false);
     }
   }
 
@@ -118,9 +138,29 @@ export const RequestMajorMinorChangePage = () => {
             onSelect={handleSelect}
             onSave={handleSave}
             errors={errors}
+            isLoading={isLoading}
           />
           <ApiDescription />
         </div>
+
+        {areExtensionsPresent && (
+          <ExtensionsModal
+            show={modalShow}
+            onDownloadExtensions={
+                () => {
+                setModalShow(false);
+              }
+            }
+            onHide={
+                () => {
+                sessionStorage.setItem("useWithoutExtensions", "true");
+                setModalShow(false);
+              }
+            }
+            title={tCommon("DownloadExtensionsHeader")}
+            message= {tCommon("DownloadExtensionsMessage")}
+          />
+        )}
       </section>
     );
   } else {

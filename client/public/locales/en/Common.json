@@ -5,5 +5,9 @@
   "AboutLink": "About",
   "LogOutLink": "Log out",
   "LogInButton": "Log in",
-  "AlertMessage": "Sorry, there was some issue with the Code Grant Authorization, so you have been logged with JWT authorization"
+  "AlertMessage": "Sorry, there was some issue with the Code Grant Authorization, so you have been logged with JWT authorization",
+  "DownloadExtensionsButton": "Extension app is now installed, try again",
+  "DownloadExtensionsHeader": "Extension app not installed",
+  "ContinueWithoutExtensionsButton": "Continue without extension app",
+  "DownloadExtensionsMessage": "This example uses an email verification extension app to verify the input email in the embedded signing session. Click the link to install the extension app in your account or select skip to continue without validation.<br><br><a href=\"https://apps-d.docusign.com/app-center/app/04bc521a-db47-439f-bd5a-c8b5dcc858f2\" target=\"_blank\" rel=\"noopener noreferrer\">https://apps-d.docusign.com/app-center/app/04bc521a-db47-439f-bd5a-c8b5dcc858f2</a>"
 }
