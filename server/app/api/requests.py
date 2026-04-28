@@ -26,7 +26,6 @@ def extension_apps():
 
     access_token = session.get('access_token')
     account_id = session.get('account_id')
-    print("Started search")
 
     try:
         extensions = Extensions.getExtensions(account_id, access_token, CONNECTED_FIELDS_BASE_HOST)
@@ -103,8 +102,6 @@ def minor_major():
         return jsonify(message='Invalid json input'), 400
 
     student = req_json['student']
-    print("Ananana")
-    print(student)
     useWithoutExtension = student['useWithoutExtension']
     envelope_args = {
         'signer_client_id': 1000,
