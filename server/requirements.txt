@@ -1,5 +1,5 @@
 certifi==2024.8.30
-cffi==1.17.1
+cffi==2.0.0
 chardet==5.2.0
 Click==8.1.7
 cryptography==43.0.3
@@ -8,6 +8,7 @@ Flask==3.0.3
 Flask-Session==0.8.0
 flask-wtf==1.2.2
 flask-cors==5.0.0
+flask-sock==0.7.0
 idna==3.10
 itsdangerous==2.2.0
 Jinja2==3.1.5

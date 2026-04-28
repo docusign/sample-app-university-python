@@ -4,6 +4,8 @@ from os import path
 from docusign_esign import (
     Recipients,
     EnvelopeDefinition,
+    ConnectEventData,
+    EventNotification,
     Tabs,
     Email,
     InitialHere,
@@ -121,7 +123,8 @@ class DsDocument:
             documents=[document],
             # The Recipients object takes arrays for each recipient type
             recipients=Recipients(signers=[signer]),
-            status='sent'  # Requests that the envelope be created and sent
+            status='sent',  # Requests that the envelope be created and sent
+            event_notification=cls._create_event_notification(envelope_args)
         )
 
         return envelope_definition
@@ -213,10 +216,38 @@ class DsDocument:
             documents=[document],
             # The Recipients object takes arrays for each recipient type
             recipients=Recipients(signers=[signer]),
-            status='sent'  # Requests that the envelope be created and sent
+            status='sent',  # Requests that the envelope be created and sent
+            event_notification=cls._create_event_notification(envelope_args)
         )
 
         return envelope_definition
+    
+    @classmethod
+    def _create_event_notification(cls, envelope_args):
+        """Creates event notification object for the envelope"""
+        monitor_url = f"{envelope_args['monitor_callback_url']}/api/monitor/envelopes/status"
+
+        event_data = ConnectEventData(
+            version='restv2.1',
+            include_data=["recipients"]
+        )
+        event_notification = EventNotification(
+            url=monitor_url,
+            delivery_mode='SIM',
+            logging_enabled='true',
+            require_acknowledgment='true',
+            events=[
+                'envelope-sent',
+                'envelope-delivered',
+                'envelope-completed',
+                'envelope-declined',
+                'envelope-voided',
+                'extension-executed'
+            ],
+            event_data=event_data
+        )
+
+        return event_notification
 
     @classmethod
     def create_with_payment(cls, tpl, student, activity_info, envelope_args): # pylint: disable-msg=too-many-locals

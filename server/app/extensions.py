@@ -11,8 +11,6 @@ class Extensions: # pylint: disable=too-few-public-methods
             "Content-Type": "application/json"
         }
         url = f"{base_path}/v1/accounts/{account_id}/connected-fields/tab-groups"
-        print("Annna url")
-        print(url)
         
         response = requests.get(url, headers=headers)
         response_data = response.json()

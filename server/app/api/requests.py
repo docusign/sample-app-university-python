@@ -6,10 +6,12 @@ from app.api.utils import process_error, check_token
 from app.clickwrap import Clickwrap
 from app.document import DsDocument
 from app.envelope import Envelope
+from app.envelope_status_store import envelope_status_store
 from app.extensions import Extensions
 from app.transcript import render_transcript
 from app.ds_config import CONNECTED_FIELDS_BASE_HOST
 import json
+import datetime
 
 from .session_data import SessionData
 
@@ -37,6 +39,57 @@ def extension_apps():
         return process_error(exc)
     return jsonify({'areExtensionsPresent': has_all_app_ids})
 
+def _extract_event_data(payload):
+    """Extract event data from the payload."""
+    event = payload.get('event', '')
+    return _extract_extension_event_data(payload) if event.startswith('extension-') else _extract_envelope_event_data(payload)
+
+
+def _extract_envelope_event_data(payload):
+    event = payload.get('event', '')
+
+    data = payload.get('data', {}) if isinstance(payload, dict) else {}
+    envelope_id = data.get('envelopeId', '')
+    envelope_summary = data.get('envelopeSummary', {}) if isinstance(data, dict) else {}
+    subject = envelope_summary.get('emailSubject', '')
+    status = envelope_summary.get('status', '')
+    status_timestamp = envelope_summary.get('statusChangedDateTime', '')
+
+    recipients = envelope_summary.get('recipients', {})
+    signers = recipients.get('signers', []) if isinstance(recipients, dict) else []
+    signer_name = signers[0].get('name', '') if len(signers) > 0 else ''
+
+    return {
+        'event': event,
+        'envelope_id': envelope_id,
+        'subject': subject,
+        'status': status,
+        'status_timestamp': status_timestamp,
+        'signer_name': signer_name,
+    }
+
+def _extract_extension_event_data(payload):
+    event = payload.get('event', '')
+
+    data = payload.get('data', {}) if isinstance(payload, dict) else {}
+    envelope_id = data.get('entityId', '')
+    extension = data.get('extension', {}) if isinstance(data, dict) else {}
+    action_contract = extension.get('actionContract', '')
+    app_name = extension.get('appName', '')
+    attempt_time = extension.get('attemptTime', '')
+
+    verification_data = extension.get('data', {})
+    verified = verification_data.get('verified', False) if isinstance(verification_data, dict) else False
+
+    return {
+        'event': event,
+        'envelope_id': envelope_id,
+        'action_contract': action_contract,
+        'app_name': app_name,
+        'attempt_time': attempt_time,
+        'verified': verified,
+    }
+
 @requests.route('/requests/minormajor', methods=['POST'])
 @cross_origin()
 @check_token
@@ -53,7 +106,8 @@ def minor_major():
     useWithoutExtension = student['useWithoutExtension']
     envelope_args = {
         'signer_client_id': 1000,
-        'ds_return_url': req_json['callback-url']
+        'ds_return_url': req_json['callback-url'],
+        'monitor_callback_url': os.environ.get('MONITOR_CALLBACK_URL'),
     }
 
     try:
@@ -64,6 +118,17 @@ def minor_major():
             envelope = DsDocument.create('minor-major.html', student, envelope_args, extensions)
         # Submit envelope to the Docusign
         envelope_id = Envelope.send(envelope, session)
+
+        data = {
+            'event': 'envelope-sent',
+            'envelope_id': envelope_id,
+            'subject': envelope.email_subject,
+            'status': 'sent',
+            'status_timestamp': datetime.datetime.now().isoformat(),
+            'signer_name': f"{student['first_name']} {student['last_name']}",
+        }
+        envelope_status_store.upsert(data)
+        publish_envelope_status()
     except ApiException as exc:
         return process_error(exc)
 
@@ -138,6 +203,17 @@ def payment_activity():
         )
         # Submit envelope to Docusign
         envelope_id = Envelope.send(envelope, session)
+
+        data = {
+            'event': 'envelope-sent',
+            'envelope_id': envelope_id,
+            'subject': envelope.email_subject,
+            'status': 'sent',
+            'status_timestamp': '',
+            'signer_name': f"{student['first_name']} {student['last_name']}",
+        }
+        envelope_status_store.upsert(data)
+        publish_envelope_status()
     except ApiException as exc:
         return process_error(exc)
 
@@ -150,6 +226,29 @@ def payment_activity():
         return process_error(exc)
     return jsonify({'envelope_id': envelope_id, 'redirect_url': result.url})
 
+@requests.route('/monitor/envelopes/status', methods=['POST'])
+@cross_origin()
+def monitor_envelope_status():
+    """Receive Docusign monitor updates."""
+    payload = request.get_json(silent=True)
+    if not payload or not isinstance(payload, dict):
+        return jsonify(message='Invalid JSON input'), 400
+
+    data = _extract_event_data(payload)
+
+    envelope_status_store.upsert(data)
+    publish_envelope_status()
+    
+    return jsonify(data), 200
+
+def publish_envelope_status():
+    records = envelope_status_store.all()
+    
+    for client in envelope_status_store.clients():
+        try:
+            client.send(json.dumps(records))
+        except Exception:
+            envelope_status_store.unregister_client(client)
 
 @requests.route('/requests', methods=['GET'])
 @cross_origin()
