@@ -30,6 +30,7 @@ export const History = () => {
       socket.onmessage = async (message) => {
         try {
           const payload = JSON.parse(message.data);
+          console.log("WebSocket message received: ", payload);
           if (Array.isArray(payload)) {
             setSubmissionsList(payload);
             return;
@@ -107,7 +108,7 @@ export const History = () => {
                   <th scope="col">{t("Status")}</th>
                   <th scope="col">{t("Last Updated")}</th>
                   <th scope="col" className="text-right">{t("Actions")}</th>
-                ``<th scope="col"> </th>
+                  <th scope="col"> </th>
                 </tr>
               </thead>
               <List list={submissionsList} onClick={onClick} />
