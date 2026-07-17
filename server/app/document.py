@@ -2,6 +2,8 @@ import base64
 from os import path
 
 from docusign_esign import (
+    ConnectEventData,
+    EventNotification,
     Recipients,
     EnvelopeDefinition,
     Tabs,
@@ -18,19 +20,12 @@ from docusign_esign import (
 from jinja2 import Environment, BaseLoader
 
 from app.ds_config import TPL_PATH, IMG_PATH
+from app.extensions import Extensions
 
 
 class DsDocument:
     @classmethod
-    def create(cls, tpl, student, envelope_args):
-        """Creates envelope
-        Parameters:
-            tpl (str): template path for the document
-            student (dict): student information
-            envelope_args (dict): parameters of the document
-        Returns:
-            EnvelopeDefinition object that will be submitted to Docusign
-        """
+    def _build_change_major_minor_objects(cls, tpl, student, envelope_args):
         with open(path.join(TPL_PATH, tpl), 'r') as file:
             content_bytes = file.read()
 
@@ -85,6 +80,86 @@ class DsDocument:
             anchor_x_offset='20'
         )
 
+        return document, signer, sign_here, initial_here
+
+    @classmethod
+    def create(cls, tpl, student, envelope_args, extensions):
+        """Creates envelope
+        Parameters:
+            tpl (str): template path for the document
+            student (dict): student information
+            envelope_args (dict): parameters of the document
+            extensions (list): list of extensions retrieved from the Docusign API
+        Returns:
+            EnvelopeDefinition object that will be submitted to Docusign
+        """
+        document, signer, sign_here, initial_here = cls._build_change_major_minor_objects(
+            tpl,
+            student,
+            envelope_args
+        )
+
+        # Create an Email field
+        email_verification_extension = Extensions.get_object_by_app_id(extensions, Extensions.getEmailExtensionId())
+        tab = next(
+            tab
+            for tab in email_verification_extension["tabs"]
+            if "VerifyEmailInput" in tab["tabLabel"]
+        )
+        verification_data = Extensions.extract_verification_data(
+            email_verification_extension["appId"],
+            tab
+        )
+        extension_data = Extensions.get_extension_data(verification_data)
+        email = Email(
+            name=verification_data["application_name"],
+            tab_label=verification_data["tab_label"],
+            tooltip=verification_data["action_input_key"],
+            document_id='1',
+            page_number='1',
+            anchor_string='/email/',
+            anchor_units='pixels',
+            required=True,
+            value=student['email'],
+            locked=False,
+            anchor_y_offset='-5',
+            extension_data=extension_data
+        )
+
+        signer.tabs = Tabs(
+            sign_here_tabs=[sign_here],
+            email_tabs=[email],
+            initial_here_tabs=[initial_here]
+        )
+
+        # Create the top-level envelope definition and populate it
+        envelope_definition = EnvelopeDefinition(
+            email_subject='Change minor/major field',
+            documents=[document],
+            # The Recipients object takes arrays for each recipient type
+            recipients=Recipients(signers=[signer]),
+            status='sent',  # Requests that the envelope be created and sent
+            event_notification=cls._create_event_notification(envelope_args)
+        )
+
+        return envelope_definition
+    
+    @classmethod
+    def create_without_extension(cls, tpl, student, envelope_args):
+        """Creates envelope
+        Parameters:
+            tpl (str): template path for the document
+            student (dict): student information
+            envelope_args (dict): parameters of the document
+        Returns:
+            EnvelopeDefinition object that will be submitted to Docusign
+        """
+        document, signer, sign_here, initial_here = cls._build_change_major_minor_objects(
+            tpl,
+            student,
+            envelope_args
+        )
+
         # Create an Email field
         email = Email(
             document_id='1',
@@ -108,7 +183,8 @@ class DsDocument:
             documents=[document],
             # The Recipients object takes arrays for each recipient type
             recipients=Recipients(signers=[signer]),
-            status='sent'  # Requests that the envelope be created and sent
+            status='sent',  # Requests that the envelope be created and sent
+            event_notification=cls._create_event_notification(envelope_args)
         )
 
         return envelope_definition
@@ -249,4 +325,33 @@ class DsDocument:
         # Request that the envelope be sent by setting status to 'sent'.
         envelope_definition.status = 'sent'
 
+        # Add event notifications
+        envelope_definition.event_notification = cls._create_event_notification(envelope_args)
+
         return envelope_definition
+    
+    @classmethod
+    def _create_event_notification(cls, envelope_args):
+        """Creates event notification object for the envelope"""
+        monitor_url = f"{envelope_args['monitor_callback_url']}/api/monitor/envelopes/status"
+
+        event_data = ConnectEventData(
+            version='restv2.1',
+            include_data=["recipients"]
+        )
+        event_notification = EventNotification(
+            url=monitor_url,
+            delivery_mode='SIM',
+            logging_enabled='true',
+            require_acknowledgment='true',
+            events=[
+                'envelope-sent',
+                'envelope-delivered',
+                'envelope-completed',
+                'envelope-declined',
+                'envelope-voided'
+            ],
+            event_data=event_data
+        )
+
+        return event_notification

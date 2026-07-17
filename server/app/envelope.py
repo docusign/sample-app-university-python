@@ -1,7 +1,8 @@
+from io import BytesIO
 import os
 
 from docusign_esign import EnvelopesApi, RecipientViewRequest
-from flask import send_from_directory
+from flask import send_file
 
 from app.ds_client import DsClient
 
@@ -100,12 +101,27 @@ class Envelope:
 
         ds_client = DsClient.get_configured_instance(access_token)
         envelope_api = EnvelopesApi(ds_client)
-        file_path = envelope_api.get_document(
+        document_data = envelope_api.get_document(
             account_id, args['document_id'], args['envelope_id'], certificate=True
         )
-        (dirname, filename) = os.path.split(file_path)
-        return send_from_directory(
-            directory=dirname,
-            path=filename,
-            as_attachment=True
+
+        if isinstance(document_data, (bytes, bytearray)):
+            filename = f"{args['envelope_id']}-{args['document_id']}.pdf"
+            return send_file(
+                BytesIO(document_data),
+                as_attachment=True,
+                download_name=filename,
+                mimetype='application/pdf'
+            )
+
+        if isinstance(document_data, str) and os.path.isfile(document_data):
+            return send_file(document_data, as_attachment=True)
+
+        payload = bytes(document_data) if not isinstance(document_data, str) else document_data.encode('utf-8')
+        filename = f"{args['envelope_id']}-{args['document_id']}.pdf"
+        return send_file(
+            BytesIO(payload),
+            as_attachment=True,
+            download_name=filename,
+            mimetype='application/pdf'
         )

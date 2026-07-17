@@ -196,7 +196,7 @@ class DsClient:
                 oauth_host_name=os.environ.get("DS_AUTH_SERVER").split("://")[1],
                 private_key_bytes=private_key_bytes,
                 expires_in=TOKEN_EXPIRATION_IN_SECONDS,
-                scopes=["signature", "impersonation", "click.manage"],
+                scopes=["signature", "impersonation", "click.manage", "adm_store_unified_repo_read"],
             )
             logger.info("JWT token successfully obtained.")
 

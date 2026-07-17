@@ -105,3 +105,17 @@ export async function getCliwrapForRequestTranscript(request) {
     handleError(error);
   }
 }
+
+export async function getExtensions() {
+  try {
+    const response = await axios.get(
+      process.env.REACT_APP_API_BASE_URL + "/requests/extensionApps",
+      {
+        withCredentials: true
+      }
+    );
+    return handleResponse(response);
+  } catch (error) {
+    handleError(error);
+  }
+}
