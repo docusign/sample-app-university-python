@@ -22,6 +22,7 @@ const initialState = {
 };
 
 export const RequestMajorMinorChangePage = () => {
+  const { t: tCommon } = useTranslation("Common");
   const { t } = useTranslation("RequestMajorMinor");
   const [state, dispatch] = useReducer(reducer, initialState);
   const [request, setRequestData] = useState({ ...initialState.request });
@@ -154,8 +155,8 @@ export const RequestMajorMinorChangePage = () => {
                 setModalShow(false);
               }
             }
-            title={t("DownloadExtensionsHeader")}
-            message= {t("DownloadExtensionsMessage")}
+            title={tCommon("DownloadExtensionsHeader")}
+            message= {tCommon("DownloadExtensionsMessage")}
           />
         )}
       </section>
