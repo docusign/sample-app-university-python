@@ -12,7 +12,8 @@ __pycache__/
 .DS_Store
 
 # frontend
-/node_modules
+node_modules/
+**/node_modules/
 /build
 
 # Keys

@@ -3,6 +3,7 @@ import { RequestForm } from "./components/RequestForm";
 import { ApiDescription } from "./components/ApiDescription";
 import { reducer } from "./requestReducer";
 import { Frame } from "../../components/Frame.js";
+import { ExtensionsModal } from "../../components/ExtensionsModal";
 import { SEND_REQEUST_SUCCESS } from "./actionTypes";
 import * as studentsAPI from "../../api/studentsAPI";
 import { useTranslation } from "react-i18next";
@@ -26,6 +27,9 @@ export const RequestMajorMinorChangePage = () => {
   const [request, setRequestData] = useState({ ...initialState.request });
   const [requesting, setRequesting] = useState(false);
   const [errors, setErrors] = useState({});
+  const [areExtensionsPresent, setAreExtensionsPresent] = useState(false);
+  const [modalShow, setModalShow] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   const courses = t("Courses", { returnObjects: true });
   const { logged, setLogged, setAuthType } = useContext(LoggedUserContext);
 
@@ -38,6 +42,9 @@ export const RequestMajorMinorChangePage = () => {
     if (!formIsValid()) {
       return;
     }
+    setLoading(true);
+    const useWithoutExtension = sessionStorage.getItem("useWithoutExtensions") === "true";
+
     const body = {
       "callback-url": process.env.REACT_APP_DS_RETURN_URL + "/signing_complete",
       student: {
@@ -45,11 +52,21 @@ export const RequestMajorMinorChangePage = () => {
         last_name: request.lastName,
         email: request.email,
         major: request.majorField,
-        minor: request.minorField
+        minor: request.minorField,
+        useWithoutExtension,
       }
     };
     setRequesting(true);
     try {
+      if (!useWithoutExtension) {
+        const extensions = await studentsAPI.getExtensions();
+        if(extensions.areExtensionsPresent === false){
+          setAreExtensionsPresent(true);
+          setModalShow(true);
+          return;
+        }
+      }
+
       const savedRequest = await studentsAPI.requestMinorChange(body);
       dispatch({
         type: SEND_REQEUST_SUCCESS,
@@ -62,6 +79,7 @@ export const RequestMajorMinorChangePage = () => {
       setErrors({ ...errors, onSave: error.message });
     } finally {
       setRequesting(false);
+      setLoading(false);
     }
   }
 
@@ -121,6 +139,25 @@ export const RequestMajorMinorChangePage = () => {
           />
           <ApiDescription />
         </div>
+
+        {areExtensionsPresent && (
+          <ExtensionsModal
+            show={modalShow}
+            onDownloadExtensions={
+                () => {
+                setModalShow(false);
+              }
+            }
+            onHide={
+                () => {
+                sessionStorage.setItem("useWithoutExtensions", "true");
+                setModalShow(false);
+              }
+            }
+            title={t("DownloadExtensionsHeader")}
+            message= {t("DownloadExtensionsMessage")}
+          />
+        )}
       </section>
     );
   } else {

@@ -5,6 +5,17 @@
   }
 }
 
+.history-table {
+  width: 100%;
+  min-width: 100%;
+  table-layout: fixed;
+
+  th,
+  td {
+    word-break: break-word;
+  }
+}
+
 .table {
   min-width: 1091px;
   @include media-breakpoint-up(lg) {

@@ -5,5 +5,9 @@
   "AboutLink": "About",
   "LogOutLink": "Log out",
   "LogInButton": "Log in",
-  "AlertMessage": "Sorry, there was some issue with the Code Grant Authorization, so you have been logged with JWT authorization"
+  "AlertMessage": "Sorry, there was some issue with the Code Grant Authorization, so you have been logged with JWT authorization",
+  "DownloadExtensionsButton": "Extension app is now installed, try again",
+  "DownloadExtensionsHeader": "Extension app is not installed",
+  "ContinueWithoutExtensionsButton": "Continue without extension app",
+  "DownloadExtensionsMessage": "Extension app is not installed for this account. Either go to the <a href=\"https://apps-d.docusign.com/app-center\" target=\"_blank\" rel=\"noopener noreferrer\">App Center</a> to install one and try again, or continue to use this sample app without a data verification extension app.<br><br><strong>Links to extension apps:</strong><br> - <a href=\"https://apps-d.docusign.com/app-center/app/04bc521a-db47-439f-bd5a-c8b5dcc858f2\" target=\"_blank\" rel=\"noopener noreferrer\">Email Verification</a> (for email verification)"
 }
