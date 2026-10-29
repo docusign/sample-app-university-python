@@ -8,6 +8,7 @@ import * as Actions from "./actionTypes";
 import { download } from "../../api/download";
 import LoggedUserContext from "../../contexts/logged-user/logged-user.context";
 import { checkUnlogged } from "../../api/auth";
+import { useNavigate } from "react-router-dom";
 
 const initialState = {
   errors: [],
@@ -26,9 +27,10 @@ export const RequestTranscriptPage = () => {
   const [requesting, setRequesting] = useState(false);
   const [errors, setErrors] = useState({});
   const { logged, setLogged, setAuthType } = useContext(LoggedUserContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    checkUnlogged(logged, setLogged, setAuthType);
+    checkUnlogged(logged, setLogged, setAuthType, navigate);
   })
 
   async function handleSave(event) {
