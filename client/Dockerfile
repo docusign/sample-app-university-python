@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 node:20.14 AS base
+FROM --platform=linux/amd64 node:26.12.1 AS base
 
 ARG REACT_APP_API_BASE_URL
 ENV REACT_APP_API_BASE_URL=$REACT_APP_API_BASE_URL

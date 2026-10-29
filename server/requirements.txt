@@ -1,5 +1,5 @@
-certifi==2024.8.30
-cffi==1.17.1
+certifi==2026.6.17
+cffi==2.0.0
 chardet==5.2.0
 Click==8.1.7
 cryptography==43.0.3

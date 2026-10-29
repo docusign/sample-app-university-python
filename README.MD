@@ -26,7 +26,8 @@ The University Sample App demonstrates the following:
    You will need the **integration key** itself and its **RSA key pair**. To use this application, you must add your application's **Redirect URI** to your integration key. This [**video**](https://www.youtube.com/watch?v=GgDqa7-L0yo) demonstrates how to create an integration key (client ID) for a user application like this example.
 * [Python 3.7+](https://www.python.org/downloads/)
 * [venv](https://docs.python.org/3/library/venv.html#module-venv)
-* [Node.js](https://nodejs.org/) v10+
+* [Node.js](https://nodejs.org/) `22.23.4`, `24.22.1`, `26.12.1` or higher
+
 
 ### Required environment variables
 

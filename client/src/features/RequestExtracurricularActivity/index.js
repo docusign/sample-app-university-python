@@ -8,6 +8,7 @@ import * as studentsAPI from "../../api/studentsAPI";
 import { useTranslation } from "react-i18next";
 import LoggedUserContext from "../../contexts/logged-user/logged-user.context";
 import { checkUnlogged } from "../../api/auth";
+import { useNavigate } from "react-router-dom";
 
 const initialState = {
   errors: [],
@@ -26,9 +27,10 @@ export const RequestExtracurricularActivityPage = () => {
   const [errors, setErrors] = useState({});
   const activities = t("Activities", { returnObjects: true });
   const { logged, setLogged, setAuthType, setShowJWTModal } = useContext(LoggedUserContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    checkUnlogged(logged, setLogged, setAuthType);
+    checkUnlogged(logged, setLogged, setAuthType, navigate);
   });
 
   async function handleSave(event) {
